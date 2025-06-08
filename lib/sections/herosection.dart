@@ -1,19 +1,149 @@
 
 
-// widgets/hero_section.dart - Hero section with profile details
+// widgets/hero_section.dart - Hero section with profile details and parallax effect
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:webportf/model/social_link_data_model.dart';
 import 'package:webportf/widgets/social_icon_widget.dart';
 
 
-class HeroSection extends StatelessWidget {
+class HeroSection extends StatefulWidget {
+  @override
+  State<HeroSection> createState() => _HeroSectionState();
+}
+
+class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin {
+  late AnimationController _entranceController;
+  late Animation<double> _entranceAnimation;
+
+  // Animation controllers for bouncy elements
+  late AnimationController _bounceController1;
+  late AnimationController _bounceController2;
+  late AnimationController _bounceController3;
+
+  // Bounce animations
+  late Animation<double> _bounceAnimation1;
+  late Animation<double> _bounceAnimation2;
+  late Animation<double> _bounceAnimation3;
+
+  // Position animations
+  late Animation<Offset> _positionAnimation1;
+  late Animation<Offset> _positionAnimation2;
+  late Animation<Offset> _positionAnimation3;
+
   final List<SocialLink> socialLinks = [
-    // SocialLink(icon: FontAwesomeIcons.instagram, url: 'https://instagram.com'),
-    SocialLink(icon: FontAwesomeIcons.linkedin, url: 'https://linkedin.com'),
+    SocialLink(icon: FontAwesomeIcons.github, url: 'https://github.com/ARUNAK97'),
+    SocialLink(icon: FontAwesomeIcons.linkedin, url: 'http://www.linkedin.com/in/arun-kumar-p-k-8b91a52aa'),
     SocialLink(icon: FontAwesomeIcons.behance, url: 'https://www.behance.net/akpk97'),
     SocialLink(icon: FontAwesomeIcons.dribbble, url: 'https://dribbble.com/Arunkumarakpk'),
+    SocialLink(icon: FontAwesomeIcons.pinterest, url: 'https://pin.it/4xDppYex1'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize entrance animation
+    _entranceController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _entranceAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _entranceController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Initialize bounce animations with different durations for variety
+    _bounceController1 = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    _bounceController2 = AnimationController(
+      duration: const Duration(milliseconds: 2500),
+      vsync: this,
+    );
+    _bounceController3 = AnimationController(
+      duration: const Duration(milliseconds: 3000),
+      vsync: this,
+    );
+
+    // Create bouncy animations
+    _bounceAnimation1 = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _bounceController1,
+      curve: Curves.elasticInOut,
+    ));
+
+    _bounceAnimation2 = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _bounceController2,
+      curve: Curves.bounceInOut,
+    ));
+
+    _bounceAnimation3 = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _bounceController3,
+      curve: Curves.elasticOut,
+    ));
+
+    // Create floating position animations
+    _positionAnimation1 = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, -20),
+    ).animate(CurvedAnimation(
+      parent: _bounceController1,
+      curve: Curves.easeInOut,
+    ));
+
+    _positionAnimation2 = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, -15),
+    ).animate(CurvedAnimation(
+      parent: _bounceController2,
+      curve: Curves.easeInOut,
+    ));
+
+    _positionAnimation3 = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, -25),
+    ).animate(CurvedAnimation(
+      parent: _bounceController3,
+      curve: Curves.easeInOut,
+    ));
+
+    // Start animations with delays
+    _entranceController.forward();
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _bounceController1.repeat(reverse: true);
+    });
+
+    Future.delayed(const Duration(milliseconds: 800), () {
+      _bounceController2.repeat(reverse: true);
+    });
+
+    Future.delayed(const Duration(milliseconds: 1200), () {
+      _bounceController3.repeat(reverse: true);
+    });
+  }
+
+  @override
+  void dispose() {
+    _entranceController.dispose();
+    _bounceController1.dispose();
+    _bounceController2.dispose();
+    _bounceController3.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,41 +151,254 @@ class HeroSection extends StatelessWidget {
     final isMobile = screenWidth < 600;
     final isTablet = screenWidth >= 600 && screenWidth < 1200;
 
-    return Container(
-      height: isMobile ? 400 : isTablet ? 500 : 1200,
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/arun poster.png'),
-          fit: BoxFit.cover,
-          alignment: Alignment.center,
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      child: Column(
-        children: [
-          Text(
-            'HI I\'M Jenny Wilson',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: isMobile ? 24 : 32,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
+    return AnimatedBuilder(
+      animation: _entranceAnimation,
+      builder: (context, child) {
+        return Container(
+          height: isMobile ? 500 : isTablet ? 600 : 1000,
+          width: double.infinity,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: Offset(0, 10),
+              ),
+            ],
           ),
-          SizedBox(height: 16),
-          Wrap(
-            spacing: 16,
-            runSpacing: 16,
-            alignment: WrapAlignment.center,
-            children: socialLinks.map((link) => SocialIcon(
-              icon: link.icon,
-              url: link.url,
-            )).toList(),
+          child: Stack(
+            children: [
+              // Purple gradient background container (base layer)
+              Container(
+                height: isMobile ? 500 : isTablet ? 600 : 1000,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF8B5CF6), // Light purple
+                      Color(0xFF7C3AED), // Medium purple
+                      Color(0xFF6D28D9), // Deep purple
+                      Color(0xFF5B21B6), // Darker purple
+                    ],
+                    stops: [0.0, 0.3, 0.7, 1.0],
+                  ),
+                ),
+              ),
+
+              // Photo website image as overlay (positioned on top, fully visible)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Image.asset(
+                  'assets/images/photo website.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                ),
+              ),
+
+              // Animated bouncy PNG elements - Now visible on all devices
+              // Frame 57 - Top left floating element
+              Positioned(
+                top: isMobile ? 30 : isTablet ? 60 : 40,
+                left: isMobile ? 10 : isTablet ? 40 : 20,
+                child: AnimatedBuilder(
+                  animation: _bounceController1,
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: _positionAnimation1.value,
+                      child: Transform.rotate(
+                        angle: _bounceAnimation1.value * 0.1,
+                        child: Transform.scale(
+                          scale: 0.8 + (_bounceAnimation1.value * 0.2),
+                          child: Opacity(
+                            opacity: (0.7 + (_bounceAnimation1.value * 0.3)).clamp(0.0, 1.0),
+                            child: Image.asset(
+                              'assets/png/Frame 57.png',
+                              width: isMobile ? 80 : isTablet ? 140 : 180,
+                              height: isMobile ? 80 : isTablet ? 140 : 180,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // Frame 68 - Top right floating element
+              Positioned(
+                top: isMobile ? 60 : isTablet ? 100 : 80,
+                right: isMobile ? 15 : isTablet ? 60 : 40,
+                child: AnimatedBuilder(
+                  animation: _bounceController2,
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: _positionAnimation2.value,
+                      child: Transform.rotate(
+                        angle: -_bounceAnimation2.value * 0.15,
+                        child: Transform.scale(
+                          scale: 0.9 + (_bounceAnimation2.value * 0.1),
+                          child: Opacity(
+                            opacity: (0.6 + (_bounceAnimation2.value * 0.4)).clamp(0.0, 1.0),
+                            child: Image.asset(
+                              'assets/png/Frame 68.png',
+                              width: isMobile ? 70 : isTablet ? 130 : 170,
+                              height: isMobile ? 70 : isTablet ? 130 : 170,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // Frame 69 - Bottom left floating element
+              Positioned(
+                bottom: isMobile ? 40 : isTablet ? 80 : 60,
+                left: isMobile ? 20 : isTablet ? 80 : 60,
+                child: AnimatedBuilder(
+                  animation: _bounceController3,
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: _positionAnimation3.value,
+                      child: Transform.rotate(
+                        angle: _bounceAnimation3.value * 0.12,
+                        child: Transform.scale(
+                          scale: 0.7 + (_bounceAnimation3.value * 0.3),
+                          child: Opacity(
+                            opacity: (0.5 + (_bounceAnimation3.value * 0.5)).clamp(0.0, 1.0),
+                            child: Image.asset(
+                              'assets/png/Frame 69.png',
+                              width: isMobile ? 90 : isTablet ? 150 : 200,
+                              height: isMobile ? 90 : isTablet ? 150 : 200,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // Content with entrance animation
+              Positioned.fill(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                       // Add some top spacing
+
+                      // Animated title
+                      Transform.translate(
+                        offset: Offset(0, 50 * (1 - _entranceAnimation.value)),
+                        child: Opacity(
+                          opacity: _entranceAnimation.value,
+                          child: Text(
+                            'Hi I\'M Arun Kumar PK',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: isMobile ? 28 : isTablet ? 36 : 48,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black.withValues(alpha: 0.8),
+                                  blurRadius: 10,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 20), // Reduced spacing
+
+                      // Animated subtitle
+                      Transform.translate(
+                        offset: Offset(0, 30 * (1 - _entranceAnimation.value)),
+                        child: Opacity(
+                          opacity: _entranceAnimation.value * 0.9,
+                          child: Text(
+                            'Creative Designer & Developer',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: isMobile ? 14 : 16, // Reduced subtitle size
+                              fontWeight: FontWeight.w300,
+                              letterSpacing: 1,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+
+
+                    ],
+                  ),
+                ),
+              ),
+
+              // Social icons positioned horizontally at bottom right corner
+              Positioned(
+                bottom: 40,
+                right: 40,
+                child: Transform.translate(
+                  offset: Offset(20 * (1 - _entranceAnimation.value), 0),
+                  child: Opacity(
+                    opacity: _entranceAnimation.value,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: socialLinks.map((link) {
+                          return AnimatedBuilder(
+                            animation: _entranceAnimation,
+                            builder: (context, child) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 6),
+                                child: Transform.scale(
+                                  scale: 0.5 + (0.5 * _entranceAnimation.value),
+                                  child: Opacity(
+                                    opacity: _entranceAnimation.value,
+                                    child: SocialIcon(
+                                      icon: link.icon,
+                                      url: link.url,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

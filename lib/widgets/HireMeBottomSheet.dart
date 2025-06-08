@@ -5,6 +5,7 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:webportf/apptheme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:webportf/services/email_config.dart';
 import 'package:webportf/services/email_service.dart';
@@ -47,210 +48,711 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
     return Container(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
-        top: 16,
-        left: 16,
-        right: 16,
+        top: isMobile ? 16 : 24,
+        left: isMobile ? 16 : 24,
+        right: isMobile ? 16 : 24,
       ),
       child: Form(
         key: _formKey,
         child: ListView(
           shrinkWrap: true,
           children: [
-            Text(
-              'Schedule an Interview',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.primaryColor,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            
-            // Contact Person Name
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: 'Full Name*',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.person),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your name';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 12),
-            
-            // Phone Number
-            TextFormField(
-              controller: _phoneController,
-              decoration: InputDecoration(
-                labelText: 'Phone Number*',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.phone),
-              ),
-              keyboardType: TextInputType.phone,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your phone number';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 12),
-            
-            // Email
-            TextFormField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email Address*',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.email),
-              ),
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                if (!EmailValidator.validate(value)) {
-                  return 'Please enter a valid email';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 12),
-            
-            // Company Name
-            TextFormField(
-              controller: _companyController,
-              decoration: InputDecoration(
-                labelText: 'Company Name',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.business),
-              ),
-            ),
-            SizedBox(height: 12),
-            
-            // Address
-            TextFormField(
-              controller: _addressController,
-              decoration: InputDecoration(
-                labelText: 'Address',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.location_on),
-              ),
-              maxLines: 2,
-            ),
-            SizedBox(height: 12),
-            
-            // Date Picker
-            InkWell(
-              onTap: () {
-                DatePicker.showDatePicker(
-                  context,
-                  showTitleActions: true,
-                  minTime: DateTime.now(),
-                  maxTime: DateTime.now().add(Duration(days: 365)),
-                  onConfirm: (date) {
-                    setState(() {
-                      _selectedDate = date;
-                    });
-                  },
-                  currentTime: DateTime.now(),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.calendar_today, color: Colors.grey),
-                    SizedBox(width: 10),
-                    Text(
-                      _selectedDate == null
-                          ? 'Select Interview Date*'
-                          : 'Date: ${DateFormat('MMM dd, yyyy').format(_selectedDate!)}',
-                      style: TextStyle(
-                        color: _selectedDate == null ? Colors.grey : Colors.black,
-                      ),
+            // Elegant header section
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Column(
+                children: [
+                  // Professional title
+                  Text(
+                    'Let\'s Work Together',
+                    style: TextStyle(
+                      fontSize: isMobile ? 24 : 28,
+                      fontWeight: FontWeight.w300,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: 1.0,
+                      height: 1.2,
                     ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 8),
+
+                  // Elegant accent line
+                  Container(
+                    width: isMobile ? 60 : 80,
+                    height: 2,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFF8B5CF6).withValues(alpha: 0.3),
+                          Color(0xFF8B5CF6),
+                          Color(0xFF8B5CF6).withValues(alpha: 0.3),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(1),
+                    ),
+                  ),
+                
+          
+                ],
+              ),
+            ),
+            SizedBox(height: isMobile ? 16 : 24),
+            
+            // Elegant form fields section
+            Container(
+              padding: EdgeInsets.all(isMobile ? 16 : 20),
+              decoration: BoxDecoration(
+                color: Color(0xFFFAFBFC),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Color(0xFFE2E8F0),
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Section title
+                  Text(
+                    'Contact Information',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+
+                  // Contact Person Name
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Full Name*',
+                      labelStyle: TextStyle(
+                        color: Color(0xFF64748B),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    ),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xFF1E293B),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 12),
+
+                  // Phone Number and Email in row for desktop
+                  if (!isMobile)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _phoneController,
+                            decoration: InputDecoration(
+                              labelText: 'Phone Number*',
+                              labelStyle: TextStyle(
+                                color: Color(0xFF64748B),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            ),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF1E293B),
+                              fontWeight: FontWeight.w400,
+                            ),
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              labelText: 'Email Address*',
+                              labelStyle: TextStyle(
+                                color: Color(0xFF64748B),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            ),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF1E293B),
+                              fontWeight: FontWeight.w400,
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              if (!EmailValidator.validate(value)) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: [
+                        // Phone Number (Mobile)
+                        TextFormField(
+                          controller: _phoneController,
+                          decoration: InputDecoration(
+                            labelText: 'Phone Number*',
+                            labelStyle: TextStyle(
+                              color: Color(0xFF64748B),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          ),
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF1E293B),
+                            fontWeight: FontWeight.w400,
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your phone number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 12),
+
+                        // Email (Mobile)
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Email Address*',
+                            labelStyle: TextStyle(
+                              color: Color(0xFF64748B),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          ),
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF1E293B),
+                            fontWeight: FontWeight.w400,
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            if (!EmailValidator.validate(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                  SizedBox(height: 12),
+
+                  // Company Name and Address in row for desktop
+                  if (!isMobile)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _companyController,
+                            decoration: InputDecoration(
+                              labelText: 'Company Name',
+                              labelStyle: TextStyle(
+                                color: Color(0xFF64748B),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            ),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF1E293B),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _addressController,
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                              labelStyle: TextStyle(
+                                color: Color(0xFF64748B),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            ),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF1E293B),
+                              fontWeight: FontWeight.w400,
+                            ),
+                            maxLines: 2,
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: [
+                        // Company Name (Mobile)
+                        TextFormField(
+                          controller: _companyController,
+                          decoration: InputDecoration(
+                            labelText: 'Company Name',
+                            labelStyle: TextStyle(
+                              color: Color(0xFF64748B),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          ),
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF1E293B),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(height: 12),
+
+                        // Address (Mobile)
+                        TextFormField(
+                          controller: _addressController,
+                          decoration: InputDecoration(
+                            labelText: 'Address',
+                            labelStyle: TextStyle(
+                              color: Color(0xFF64748B),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          ),
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF1E293B),
+                            fontWeight: FontWeight.w400,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+            SizedBox(height: isMobile ? 16 : 20),
+            
+            // Elegant scheduling section
+            Container(
+              padding: EdgeInsets.all(isMobile ? 16 : 20),
+              decoration: BoxDecoration(
+                color: Color(0xFFFAFBFC),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Color(0xFFE2E8F0),
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Section title
+                  Text(
+                    'Schedule Meeting',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+
+                  // Date and Time in row for desktop
+                  if (!isMobile)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildDatePicker(),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: _buildTimePicker(),
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: [
+                        _buildDatePicker(),
+                        SizedBox(height: 12),
+                        _buildTimePicker(),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+            SizedBox(height: isMobile ? 16 : 20),
+            
+            // Elegant notes section
+            Container(
+              padding: EdgeInsets.all(isMobile ? 16 : 20),
+              decoration: BoxDecoration(
+                color: Color(0xFFFAFBFC),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Color(0xFFE2E8F0),
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Section title
+                  Text(
+                    'Additional Information',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+
+                  // Notes field
+                  TextFormField(
+                    controller: _notesController,
+                    decoration: InputDecoration(
+                      labelText: 'Project details, requirements, or any specific questions...',
+                      labelStyle: TextStyle(
+                        color: Color(0xFF64748B),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      alignLabelWithHint: true,
+                    ),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xFF1E293B),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    maxLines: 4,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: isMobile ? 24 : 32),
+
+            // Elegant Submit Button
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF8B5CF6),
+                    Color(0xFF7C3AED),
                   ],
                 ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFF8B5CF6).withValues(alpha: 0.3),
+                    blurRadius: 12,
+                    offset: Offset(0, 4),
+                    spreadRadius: 0,
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 12),
-            
-            // Time Picker
-            InkWell(
-              onTap: () async {
-                final TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.now(),
-                );
-                if (picked != null) {
-                  setState(() {
-                    _selectedTime = picked;
-                  });
-                }
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(4),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  padding: EdgeInsets.symmetric(vertical: isMobile ? 16 : 18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.access_time, color: Colors.grey),
-                    SizedBox(width: 10),
-                    Text(
-                      _selectedTime == null
-                          ? 'Select Interview Time*'
-                          : 'Time: ${_selectedTime!.format(context)}',
-                      style: TextStyle(
-                        color: _selectedTime == null ? Colors.grey : Colors.black,
+                onPressed: _isSubmitting ? null : _submitForm,
+                child: _isSubmitting
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.send_rounded,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Schedule Me An Interview',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+              ),
+            ),
+            SizedBox(height: isMobile ? 20 : 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDatePicker() {
+    return InkWell(
+      onTap: () async {
+        final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime.now().add(Duration(days: 365)),
+          builder: (context, child) {
+            return Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: Color(0xFF8B5CF6),
+                  onPrimary: Colors.white,
+                  surface: Colors.white,
+                  onSurface: Color(0xFF1E293B),
+                ),
+              ),
+              child: child!,
+            );
+          },
+        );
+        if (picked != null) {
+          setState(() {
+            _selectedDate = picked;
+          });
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: _selectedDate != null ? Color(0xFF8B5CF6).withValues(alpha: 0.3) : Color(0xFFE2E8F0),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Color(0xFF8B5CF6).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Icon(
+                Icons.calendar_today_rounded,
+                color: Color(0xFF8B5CF6),
+                size: 16,
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                _selectedDate == null
+                    ? 'Select Date*'
+                    : DateFormat('MMM dd, yyyy').format(_selectedDate!),
+                style: TextStyle(
+                  color: _selectedDate == null ? Color(0xFF64748B) : Color(0xFF1E293B),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
-            SizedBox(height: 12),
-            
-            // Additional Notes
-            TextFormField(
-              controller: _notesController,
-              decoration: InputDecoration(
-                labelText: 'Additional Notes',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.note),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimePicker() {
+    return InkWell(
+      onTap: () async {
+        final TimeOfDay? picked = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+          builder: (context, child) {
+            return Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: Color(0xFF8B5CF6),
+                  onPrimary: Colors.white,
+                  surface: Colors.white,
+                  onSurface: Color(0xFF1E293B),
+                ),
               ),
-              maxLines: 3,
-            ),
-            SizedBox(height: 20),
-            
-            // Submit Button
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 15),
+              child: child!,
+            );
+          },
+        );
+        if (picked != null) {
+          setState(() {
+            _selectedTime = picked;
+          });
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: _selectedTime != null ? Color(0xFF8B5CF6).withValues(alpha: 0.3) : Color(0xFFE2E8F0),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Color(0xFF8B5CF6).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(6),
               ),
-              onPressed: _isSubmitting ? null : _submitForm,
-              child: _isSubmitting
-                  ? CircularProgressIndicator(color: Colors.white)
-                  : Text('Submit Request'),
+              child: Icon(
+                Icons.access_time_rounded,
+                color: Color(0xFF8B5CF6),
+                size: 16,
+              ),
             ),
-            SizedBox(height: 20),
+            SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                _selectedTime == null
+                    ? 'Select Time*'
+                    : _selectedTime!.format(context),
+                style: TextStyle(
+                  color: _selectedTime == null ? Color(0xFF64748B) : Color(0xFF1E293B),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -294,37 +796,80 @@ Time: ${_selectedTime!.format(context)}
 
 Additional Notes:
 ${_notesController.text}
+
+---
+This interview request was submitted through the portfolio website.
 ''';
 
-        // For demo purposes and testing, you can use this simulated approach
-        // If you don't want to set up email credentials yet
-        if (EmailConfig.senderEmail == 'your.sending.email@gmail.com') {
-          // Simulating email sending delay for testing
-          await Future.delayed(Duration(seconds: 2));
-          
-          print('Would send email to: ${widget.recipientEmail}');
-          print('Subject: $emailSubject');
-          print('Content: $emailContent');
-        } else {
-          // Send actual email if credentials are configured
-          await EmailService.sendEmail(
-            recipientEmail: widget.recipientEmail,
-            subject: emailSubject,
-            body: emailContent,
-            senderEmail: EmailConfig.senderEmail,
-            senderPassword: EmailConfig.senderPassword,
-            senderName: EmailConfig.senderName,
-          );
-        }
+        // Construct WhatsApp message
+        final whatsappMessage = '''
+🎯 *New Interview Request*
+
+👤 *Contact Details:*
+• Name: ${_nameController.text}
+• Phone: ${_phoneController.text}
+• Email: ${_emailController.text}
+• Company: ${_companyController.text.isNotEmpty ? _companyController.text : 'Not specified'}
+• Address: ${_addressController.text.isNotEmpty ? _addressController.text : 'Not specified'}
+
+📅 *Interview Schedule:*
+• Date: ${DateFormat('MMMM dd, yyyy').format(_selectedDate!)}
+• Time: ${_selectedTime!.format(context)}
+
+📝 *Additional Notes:*
+${_notesController.text.isNotEmpty ? _notesController.text : 'No additional notes provided'}
+
+---
+Sent from Portfolio Website
+''';
+
+        // Send to Email (akpk369@gmail.com)
+        final emailLaunchUri = Uri(
+          scheme: 'mailto',
+          path: 'akpk369@gmail.com',
+          queryParameters: {
+            'subject': emailSubject,
+            'body': emailContent,
+          },
+        );
+
+        // Send to WhatsApp (+918129979506)
+        final whatsappUri = Uri.parse(
+          'https://wa.me/918129979506?text=${Uri.encodeComponent(whatsappMessage)}'
+        );
+
+        // Launch email client
+        await launchUrl(emailLaunchUri);
+
+        // Small delay before launching WhatsApp
+        await Future.delayed(Duration(milliseconds: 500));
+
+        // Launch WhatsApp
+        await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
         
         // Show success message
         if (mounted) {
           Navigator.pop(context); // Close the bottom sheet
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Interview request submitted successfully!'),
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 3),
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white, size: 20),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Interview request sent! Email and WhatsApp opened successfully.',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Color(0xFF10B981),
+              duration: Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           );
         }
@@ -332,9 +877,24 @@ ${_notesController.text}
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to submit request: ${e.toString()}'),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 5),
+              content: Row(
+                children: [
+                  Icon(Icons.error_outline, color: Colors.white, size: 20),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Failed to open email/WhatsApp. Please try again.',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Color(0xFFEF4444),
+              duration: Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           );
         }

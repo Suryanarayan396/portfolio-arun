@@ -13,4 +13,6 @@ class AppTheme {
   // Using the color constants from AppColorConstants
   static const Color primaryColor = AppColorConstants.primaryPurple;
   static const Color secondaryColor = AppColorConstants.secondaryPurple;
+  static const Color backgroundColor = AppColorConstants.backgroundLight;
+  static const Color textwhite = AppColorConstants.white;
 }
