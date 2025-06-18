@@ -30,16 +30,17 @@ class _AboutSectionState extends State<AboutSection>
   void initState() {
     super.initState();
 
-    // Initialize animation controllers for each skill
+// Initialize animation controllers for each skill
     _waveControllers = List.generate(
       skills.length,
       (index) => AnimationController(
-        duration: Duration(milliseconds: 2000 + (index * 200)), // Staggered timing
+        duration:
+            Duration(milliseconds: 2000 + (index * 200)), // Staggered timing
         vsync: this,
       ),
     );
 
-    // Initialize wave animations with different curves for variety
+// Initialize wave animations with different curves for variety
     _waveAnimations = _waveControllers.map((controller) {
       return Tween<double>(
         begin: 0.0,
@@ -50,7 +51,7 @@ class _AboutSectionState extends State<AboutSection>
       ));
     }).toList();
 
-    // Start animations with staggered delays
+// Start animations with staggered delays
     for (int i = 0; i < _waveControllers.length; i++) {
       Future.delayed(Duration(milliseconds: i * 300), () {
         if (mounted) {
@@ -68,58 +69,94 @@ class _AboutSectionState extends State<AboutSection>
     super.dispose();
   }
 
-  // Method to download resume
+// Method to download resume
   Future<void> _downloadResume(BuildContext context) async {
     try {
-      // For web deployment, you should host the CV on a public URL
-      // For now, we'll show a message to the user
-      // Replace this URL with your actual hosted CV URL when deploying
+      // Direct Google Drive link to Arun Kumar's resume
       const String resumeUrl =
-          'https://your-website.com/assets/resume/ARUN_KUMAR_CV.pdf';
+          'https://drive.google.com/file/d/1HfwFpSl_oa75bKda38uOmv60Yqp5hJ22/view?usp=drivesdk';
 
-      // For development/demo purposes, show an info dialog
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Resume Download'),
-              content: const Text(
-                'The CV file "ARUN KUMAR CV.pdf" is available in the assets folder.\n\n'
-                'For web deployment, please:\n'
-                '1. Host the CV on a public URL\n'
-                '2. Update the resumeUrl in the code\n'
-                '3. The download will work automatically',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('OK'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    Navigator.of(context).pop();
-                    // Try to open the URL anyway (will work if properly hosted)
-                    final Uri uri = Uri.parse(resumeUrl);
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri,
-                          mode: LaunchMode.externalApplication);
-                    }
-                  },
-                  child: const Text('Try Download'),
-                ),
-              ],
-            );
-          },
+      // Convert to direct download link for better user experience
+      const String directDownloadUrl =
+          'https://drive.google.com/uc?export=download&id=1HfwFpSl_oa75bKda38uOmv60Yqp5hJ22';
+
+      final Uri uri = Uri.parse(directDownloadUrl);
+
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication,
         );
+
+        // Show success message
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.download_done, color: Colors.white, size: 20),
+                  SizedBox(width: 8),
+                  Text('Resume download started!'),
+                ],
+              ),
+              backgroundColor: Color(0xFF8B5CF6),
+              behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          );
+        }
+      } else {
+        // Fallback to view link if direct download fails
+        final Uri viewUri = Uri.parse(resumeUrl);
+        if (await canLaunchUrl(viewUri)) {
+          await launchUrl(
+            viewUri,
+            mode: LaunchMode.externalApplication,
+          );
+
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Row(
+                  children: [
+                    Icon(Icons.open_in_new, color: Colors.white, size: 20),
+                    SizedBox(width: 8),
+                    Text('Resume opened in browser'),
+                  ],
+                ),
+                backgroundColor: Color(0xFF7C3AED),
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(seconds: 3),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            );
+          }
+        } else {
+          throw Exception('Could not launch resume URL');
+        }
       }
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error accessing resume. Please try again.'),
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.error_outline, color: Colors.white, size: 20),
+                SizedBox(width: 8),
+                Text('Error accessing resume. Please try again.'),
+              ],
+            ),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 4),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         );
       }
@@ -149,7 +186,7 @@ class _AboutSectionState extends State<AboutSection>
           EdgeInsets.symmetric(vertical: isMobile ? 40 : 60, horizontal: 20),
       child: Column(
         children: [
-          // Main About Me Section
+// Main About Me Section
           Container(
             constraints: BoxConstraints(maxWidth: 1200),
             padding: EdgeInsets.all(isMobile ? 24 : 40),
@@ -185,7 +222,7 @@ class _AboutSectionState extends State<AboutSection>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Elegant section header
+// Elegant section header
                 Center(
                   child: Column(
                     children: [
@@ -222,11 +259,11 @@ class _AboutSectionState extends State<AboutSection>
                 ),
                 SizedBox(height: isMobile ? 32 : 40),
 
-                // Profile and Introduction
+// Profile and Introduction
                 isMobile
                     ? Column(
                         children: [
-                          _buildMobileLayout(context),
+                          _buildMobileLayout(context,isMobile),
                           const SizedBox(height: 40),
                           _buildWhatIDoSection(isMobile),
                         ],
@@ -238,44 +275,44 @@ class _AboutSectionState extends State<AboutSection>
 
           SizedBox(height: isMobile ? 32 : 40),
 
-          // Skills Section
+// Skills Section
           _buildSkillsSection(isMobile),
         ],
       ),
     );
   }
 
-  Widget _buildMobileLayout(BuildContext context) {
+  Widget _buildMobileLayout(BuildContext context,bool isMobile) {
     return Column(
       children: [
-        // Profile Image
+// Profile Image
         Container(
-                        decoration: BoxDecoration(
-                          color: AppTheme.backgroundColor,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.2),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
-                            ),
-                          ],
-                        ),
-                        child: ClipOval(
-                          child: Container(
-                            width: 200,
-                            height: 200,
-                            color: AppTheme.textwhite,
-                            child: Image.asset(
-                              'assets/images/arun_poster-removebg-preview.png',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
+          decoration: BoxDecoration(
+            color: AppTheme.backgroundColor,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: ClipOval(
+            child: Container(
+              width: 200,
+              height: 200,
+              color: AppTheme.textwhite,
+              child: Image.asset(
+                'assets/images/arun_poster-removebg-preview.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
         const SizedBox(height: 16),
 
-        // My Approach Quote Box
+// My Approach Quote Box
         Container(
           padding: const EdgeInsets.all(20),
           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -327,7 +364,7 @@ class _AboutSectionState extends State<AboutSection>
         ),
         const SizedBox(height: 24),
 
-        // Introduction Text
+// Introduction Text
         Container(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -335,7 +372,7 @@ class _AboutSectionState extends State<AboutSection>
               Text(
                 'Hi, I\'m ARUN KUMAR P K',
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: isMobile? 18:22,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF1E293B),
                   letterSpacing: 0.5,
@@ -371,7 +408,7 @@ class _AboutSectionState extends State<AboutSection>
         ),
         const SizedBox(height: 24),
 
-        // Action Buttons
+// Action Buttons
         Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
@@ -427,7 +464,7 @@ class _AboutSectionState extends State<AboutSection>
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Left side - Profile Image with Quote and Introduction
+// Left side - Profile Image with Quote and Introduction
         Expanded(
           flex: 2,
           child: Column(
@@ -435,10 +472,10 @@ class _AboutSectionState extends State<AboutSection>
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Profile Image with Quote
+// Profile Image with Quote
                   Column(
                     children: [
-                      // Profile Image
+// Profile Image
                       Container(
                         decoration: BoxDecoration(
                           color: AppTheme.backgroundColor,
@@ -465,7 +502,7 @@ class _AboutSectionState extends State<AboutSection>
                       ),
                       const SizedBox(height: 16),
 
-                      // My Approach Quote Box
+// My Approach Quote Box
                       Container(
                         width: 240,
                         padding: const EdgeInsets.all(14),
@@ -508,7 +545,7 @@ class _AboutSectionState extends State<AboutSection>
                   ),
                   const SizedBox(width: 24),
 
-                  // Introduction Text
+// Introduction Text
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -552,7 +589,7 @@ class _AboutSectionState extends State<AboutSection>
                         ),
                         const SizedBox(height: 18),
 
-                        // Action Button
+// Action Button
                         ElevatedButton.icon(
                           onPressed: () => _downloadResume(context),
                           icon: const Icon(Icons.download, color: Colors.white),
@@ -582,7 +619,7 @@ class _AboutSectionState extends State<AboutSection>
 
         const SizedBox(width: 40),
 
-        // Right side - What I Do Section
+// Right side - What I Do Section
         Expanded(
           flex: 1,
           child: _buildWhatIDoSection(false),
@@ -640,7 +677,7 @@ class _AboutSectionState extends State<AboutSection>
       ),
       child: Row(
         children: [
-          // Minimalist icon
+// Minimalist icon
           Container(
             width: 24,
             height: 24,
@@ -656,7 +693,7 @@ class _AboutSectionState extends State<AboutSection>
           ),
           const SizedBox(width: 10),
 
-          // Content
+// Content
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -691,7 +728,7 @@ class _AboutSectionState extends State<AboutSection>
   Widget _buildSkillsSection(bool isMobile) {
     return Column(
       children: [
-        // Elegant skills header
+// Elegant skills header
         Column(
           children: [
             Text(
@@ -704,21 +741,21 @@ class _AboutSectionState extends State<AboutSection>
               ),
             ),
             SizedBox(height: 8),
-          Container(
-                  width: isMobile ? 80 : 120,
-                  height: 3,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF8B5CF6).withValues(alpha: 0.3),
-                        Color(0xFF8B5CF6),
-                        Color(0xFF7C3AED),
-                        Color(0xFF8B5CF6).withValues(alpha: 0.3),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+            Container(
+              width: isMobile ? 80 : 120,
+              height: 3,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF8B5CF6).withValues(alpha: 0.3),
+                    Color(0xFF8B5CF6),
+                    Color(0xFF7C3AED),
+                    Color(0xFF8B5CF6).withValues(alpha: 0.3),
+                  ],
                 ),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
           ],
         ),
         SizedBox(height: isMobile ? 24 : 32),
@@ -749,23 +786,27 @@ class _AboutSectionState extends State<AboutSection>
     );
   }
 
-  Widget _buildModernSkillIndicator(String skillName, double percentage, int index) {
+  Widget _buildModernSkillIndicator(
+      String skillName, double percentage, int index) {
     return AnimatedBuilder(
       animation: _waveAnimations[index],
       builder: (context, child) {
-        // Create wavy effect by modifying the scale and position
-        double scaleEffect = 1.0 + (_waveAnimations[index].value * 0.05); // Subtle scale
+// Create wavy effect by modifying the scale and position
+        double scaleEffect =
+            1.0 + (_waveAnimations[index].value * 0.05); // Subtle scale
 
         return Transform.translate(
           offset: Offset(
-            math.sin(_waveAnimations[index].value * 2 * math.pi) * 3, // Horizontal wave
-            math.cos(_waveAnimations[index].value * 2 * math.pi + index) * 2, // Vertical wave with phase offset
+            math.sin(_waveAnimations[index].value * 2 * math.pi) *
+                3, // Horizontal wave
+            math.cos(_waveAnimations[index].value * 2 * math.pi + index) *
+                2, // Vertical wave with phase offset
           ),
           child: Transform.scale(
             scale: scaleEffect,
             child: Column(
               children: [
-                // Circular Progress Indicator with wavy glow effect
+// Circular Progress Indicator with wavy glow effect
                 Container(
                   width: 100,
                   height: 100,
@@ -773,7 +814,8 @@ class _AboutSectionState extends State<AboutSection>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Color(0xFF8B5CF6).withValues(alpha: 0.3 + (_waveAnimations[index].value * 0.2)),
+                        color: Color(0xFF8B5CF6).withValues(
+                            alpha: 0.3 + (_waveAnimations[index].value * 0.2)),
                         blurRadius: 15 + (_waveAnimations[index].value * 10),
                         spreadRadius: 2 + (_waveAnimations[index].value * 3),
                       ),
@@ -781,7 +823,7 @@ class _AboutSectionState extends State<AboutSection>
                   ),
                   child: Stack(
                     children: [
-                      // Background circle
+// Background circle
                       Container(
                         width: 100,
                         height: 100,
@@ -790,7 +832,7 @@ class _AboutSectionState extends State<AboutSection>
                           color: Colors.white,
                         ),
                       ),
-                      // Animated progress circle
+// Animated progress circle
                       SizedBox(
                         width: 100,
                         height: 100,
@@ -808,7 +850,7 @@ class _AboutSectionState extends State<AboutSection>
                           ),
                         ),
                       ),
-                      // Animated percentage text in center
+// Animated percentage text in center
                       Center(
                         child: AnimatedDefaultTextStyle(
                           duration: Duration(milliseconds: 300),
@@ -828,7 +870,7 @@ class _AboutSectionState extends State<AboutSection>
                   ),
                 ),
                 const SizedBox(height: 12),
-                // Animated skill name
+// Animated skill name
                 AnimatedDefaultTextStyle(
                   duration: Duration(milliseconds: 300),
                   style: TextStyle(
@@ -853,23 +895,27 @@ class _AboutSectionState extends State<AboutSection>
     );
   }
 
-  Widget _buildMobileSkillIndicator(String skillName, double percentage, int index) {
+  Widget _buildMobileSkillIndicator(
+      String skillName, double percentage, int index) {
     return AnimatedBuilder(
       animation: _waveAnimations[index],
       builder: (context, child) {
-        // Create wavy effect for mobile indicators
-        double scaleEffect = 1.0 + (_waveAnimations[index].value * 0.03); // Subtle scale
+// Create wavy effect for mobile indicators
+        double scaleEffect =
+            1.0 + (_waveAnimations[index].value * 0.03); // Subtle scale
 
         return Transform.translate(
           offset: Offset(
-            math.sin(_waveAnimations[index].value * 2 * math.pi + index) * 1.5, // Horizontal wave
-            math.cos(_waveAnimations[index].value * 2 * math.pi + index * 0.5) * 1, // Vertical wave
+            math.sin(_waveAnimations[index].value * 2 * math.pi + index) *
+                1.5, // Horizontal wave
+            math.cos(_waveAnimations[index].value * 2 * math.pi + index * 0.5) *
+                1, // Vertical wave
           ),
           child: Transform.scale(
             scale: scaleEffect,
             child: Column(
               children: [
-                // Animated Circular Progress Indicator - Reduced size for mobile
+// Animated Circular Progress Indicator - Reduced size for mobile
                 Container(
                   width: 50,
                   height: 50,
@@ -877,7 +923,8 @@ class _AboutSectionState extends State<AboutSection>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Color(0xFF8B5CF6).withValues(alpha: 0.2 + (_waveAnimations[index].value * 0.15)),
+                        color: Color(0xFF8B5CF6).withValues(
+                            alpha: 0.2 + (_waveAnimations[index].value * 0.15)),
                         blurRadius: 8 + (_waveAnimations[index].value * 6),
                         spreadRadius: 1 + (_waveAnimations[index].value * 2),
                       ),
@@ -885,7 +932,7 @@ class _AboutSectionState extends State<AboutSection>
                   ),
                   child: Stack(
                     children: [
-                      // Background circle
+// Background circle
                       Container(
                         width: 50,
                         height: 50,
@@ -894,7 +941,7 @@ class _AboutSectionState extends State<AboutSection>
                           color: Colors.white,
                         ),
                       ),
-                      // Animated progress circle
+// Animated progress circle
                       SizedBox(
                         width: 50,
                         height: 50,
@@ -912,7 +959,7 @@ class _AboutSectionState extends State<AboutSection>
                           ),
                         ),
                       ),
-                      // Animated percentage text in center
+// Animated percentage text in center
                       Center(
                         child: AnimatedDefaultTextStyle(
                           duration: Duration(milliseconds: 300),
@@ -932,7 +979,7 @@ class _AboutSectionState extends State<AboutSection>
                   ),
                 ),
                 const SizedBox(height: 8),
-                // Animated skill name
+// Animated skill name
                 AnimatedDefaultTextStyle(
                   duration: Duration(milliseconds: 300),
                   style: TextStyle(

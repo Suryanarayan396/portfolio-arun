@@ -97,13 +97,11 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                       borderRadius: BorderRadius.circular(1),
                     ),
                   ),
-                
-          
                 ],
               ),
             ),
             SizedBox(height: isMobile ? 16 : 24),
-            
+
             // Elegant form fields section
             Container(
               padding: EdgeInsets.all(isMobile ? 16 : 20),
@@ -147,7 +145,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                       focusedErrorBorder: InputBorder.none,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                     ),
                     style: TextStyle(
                       fontSize: 15,
@@ -184,7 +183,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                               focusedErrorBorder: InputBorder.none,
                               filled: true,
                               fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 14),
                             ),
                             style: TextStyle(
                               fontSize: 15,
@@ -218,7 +218,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                               focusedErrorBorder: InputBorder.none,
                               filled: true,
                               fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 14),
                             ),
                             style: TextStyle(
                               fontSize: 15,
@@ -259,7 +260,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                             focusedErrorBorder: InputBorder.none,
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 14),
                           ),
                           style: TextStyle(
                             fontSize: 15,
@@ -293,7 +295,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                             focusedErrorBorder: InputBorder.none,
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 14),
                           ),
                           style: TextStyle(
                             fontSize: 15,
@@ -337,7 +340,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                               focusedErrorBorder: InputBorder.none,
                               filled: true,
                               fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 14),
                             ),
                             style: TextStyle(
                               fontSize: 15,
@@ -364,7 +368,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                               focusedErrorBorder: InputBorder.none,
                               filled: true,
                               fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 14),
                             ),
                             style: TextStyle(
                               fontSize: 15,
@@ -396,7 +401,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                             focusedErrorBorder: InputBorder.none,
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 14),
                           ),
                           style: TextStyle(
                             fontSize: 15,
@@ -423,7 +429,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                             focusedErrorBorder: InputBorder.none,
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 14),
                           ),
                           style: TextStyle(
                             fontSize: 15,
@@ -438,7 +445,7 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
               ),
             ),
             SizedBox(height: isMobile ? 16 : 20),
-            
+
             // Elegant scheduling section
             Container(
               padding: EdgeInsets.all(isMobile ? 16 : 20),
@@ -490,7 +497,7 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
               ),
             ),
             SizedBox(height: isMobile ? 16 : 20),
-            
+
             // Elegant notes section
             Container(
               padding: EdgeInsets.all(isMobile ? 16 : 20),
@@ -521,7 +528,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                   TextFormField(
                     controller: _notesController,
                     decoration: InputDecoration(
-                      labelText: 'Project details, requirements, or any specific questions...',
+                      labelText:
+                          'Project details, requirements, or any specific questions...',
                       labelStyle: TextStyle(
                         color: Color(0xFF64748B),
                         fontSize: 14,
@@ -534,7 +542,8 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                       focusedErrorBorder: InputBorder.none,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       alignLabelWithHint: true,
                     ),
                     style: TextStyle(
@@ -653,7 +662,9 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: _selectedDate != null ? Color(0xFF8B5CF6).withValues(alpha: 0.3) : Color(0xFFE2E8F0),
+            color: _selectedDate != null
+                ? Color(0xFF8B5CF6).withValues(alpha: 0.3)
+                : Color(0xFFE2E8F0),
             width: 1,
           ),
         ),
@@ -678,7 +689,9 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                     ? 'Select Date*'
                     : DateFormat('MMM dd, yyyy').format(_selectedDate!),
                 style: TextStyle(
-                  color: _selectedDate == null ? Color(0xFF64748B) : Color(0xFF1E293B),
+                  color: _selectedDate == null
+                      ? Color(0xFF64748B)
+                      : Color(0xFF1E293B),
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
                 ),
@@ -722,7 +735,9 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: _selectedTime != null ? Color(0xFF8B5CF6).withValues(alpha: 0.3) : Color(0xFFE2E8F0),
+            color: _selectedTime != null
+                ? Color(0xFF8B5CF6).withValues(alpha: 0.3)
+                : Color(0xFFE2E8F0),
             width: 1,
           ),
         ),
@@ -747,7 +762,9 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
                     ? 'Select Time*'
                     : _selectedTime!.format(context),
                 style: TextStyle(
-                  color: _selectedTime == null ? Color(0xFF64748B) : Color(0xFF1E293B),
+                  color: _selectedTime == null
+                      ? Color(0xFF64748B)
+                      : Color(0xFF1E293B),
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
                 ),
@@ -759,9 +776,9 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
     );
   }
 
-  void _submitForm() async {
+ void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      if (_selectedDate == null) {
+      if (_selectedDate == null) {  
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Please select an interview date')),
         );
@@ -775,34 +792,177 @@ class _HireMeBottomSheetState extends State<HireMeBottomSheet> {
         return;
       }
 
-      setState(() {
-        _isSubmitting = true;
-      });
+      // Show dialog with WhatsApp and Email options
+      _showContactMethodDialog();
+    }
+  }
 
-      try {
-        // Construct email subject and content
-        final emailSubject = 'New Interview Request from ${_nameController.text}';
-        final emailContent = '''
-Contact Person Details:
-Name: ${_nameController.text}
-Phone: ${_phoneController.text}
-Email: ${_emailController.text}
-Company: ${_companyController.text}
-Address: ${_addressController.text}
+  void _showContactMethodDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            'Choose Contact Method',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1E293B),
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'How would you like to send your interview request?',
+                style: TextStyle(
+                  color: Color(0xFF64748B),
+                  fontSize: 14,
+                ),
+              ),
+              SizedBox(height: 20),
+              
+              // WhatsApp Option
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  _sendViaWhatsApp();
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF25D366).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Color(0xFF25D366).withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF25D366),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.chat,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'WhatsApp',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1E293B),
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            'Send via WhatsApp message',
+                            style: TextStyle(
+                              color: Color(0xFF64748B),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              
+              // Email Option
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  _sendViaEmail();
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF8B5CF6).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Color(0xFF8B5CF6).withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF8B5CF6),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.email,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Email',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1E293B),
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            'Send via email client',
+                            style: TextStyle(
+                              color: Color(0xFF64748B),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Color(0xFF64748B),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-Interview Details:
-Date: ${DateFormat('MMMM dd, yyyy').format(_selectedDate!)}
-Time: ${_selectedTime!.format(context)}
+  void _sendViaWhatsApp() async {
+    setState(() {
+      _isSubmitting = true;
+    });
 
-Additional Notes:
-${_notesController.text}
-
----
-This interview request was submitted through the portfolio website.
-''';
-
-        // Construct WhatsApp message
-        final whatsappMessage = '''
+    try {
+      // Construct WhatsApp message
+      final whatsappMessage = '''
 🎯 *New Interview Request*
 
 👤 *Contact Details:*
@@ -823,88 +983,139 @@ ${_notesController.text.isNotEmpty ? _notesController.text : 'No additional note
 Sent from Portfolio Website
 ''';
 
-        // Send to Email (akpk369@gmail.com)
-        final emailLaunchUri = Uri(
-          scheme: 'mailto',
-          path: 'akpk369@gmail.com',
-          queryParameters: {
-            'subject': emailSubject,
-            'body': emailContent,
-          },
-        );
+      // Send to WhatsApp (+918129979506)
+      final whatsappUri = Uri.parse('https://wa.me/918129979506').replace(
+        queryParameters: {'text': whatsappMessage},
+      );
 
-        // Send to WhatsApp (+918129979506)
-        final whatsappUri = Uri.parse(
-          'https://wa.me/918129979506?text=${Uri.encodeComponent(whatsappMessage)}'
-        );
-
-        // Launch email client
-        await launchUrl(emailLaunchUri);
-
-        // Small delay before launching WhatsApp
-        await Future.delayed(Duration(milliseconds: 500));
-
-        // Launch WhatsApp
-        await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
-        
-        // Show success message
-        if (mounted) {
-          Navigator.pop(context); // Close the bottom sheet
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.check_circle, color: Colors.white, size: 20),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Interview request sent! Email and WhatsApp opened successfully.',
-                      style: TextStyle(color: Colors.white),
-                    ),
+      // Launch WhatsApp
+      await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
+      
+      // Show success message
+      if (mounted) {
+        Navigator.pop(context); // Close the bottom sheet
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white, size: 20),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'WhatsApp opened successfully! Interview request ready to send.',
+                    style: TextStyle(color: Colors.white),
                   ),
-                ],
-              ),
-              backgroundColor: Color(0xFF10B981),
-              duration: Duration(seconds: 4),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+                ),
+              ],
             ),
-          );
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.error_outline, color: Colors.white, size: 20),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Failed to open email/WhatsApp. Please try again.',
-                      style: TextStyle(color: Colors.white),
-                    ),
+            backgroundColor: Color(0xFF25D366),
+            duration: Duration(seconds: 4),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.error_outline, color: Colors.white, size: 20),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Failed to open WhatsApp. Please try again.',
+                    style: TextStyle(color: Colors.white),
                   ),
-                ],
-              ),
-              backgroundColor: Color(0xFFEF4444),
-              duration: Duration(seconds: 4),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+                ),
+              ],
             ),
-          );
-        }
-      } finally {
-        if (mounted) {
-          setState(() {
-            _isSubmitting = false;
-          });
-        }
+            backgroundColor: Color(0xFFEF4444),
+            duration: Duration(seconds: 4),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
       }
     }
   }
+void _sendViaEmail() async {
+  setState(() {
+    _isSubmitting = true;
+  });
+
+  try {
+    // Construct email content with proper formatting
+    final emailContent = '''
+Contact Person Details:
+Name: ${_nameController.text}
+Phone: ${_phoneController.text}
+Email: ${_emailController.text}
+Company: ${_companyController.text}
+Address: ${_addressController.text}
+
+Interview Details:
+Date: ${DateFormat('MMMM dd, yyyy').format(_selectedDate!)}
+Time: ${_selectedTime!.format(context)}
+
+Additional Notes:
+${_notesController.text}
+
+---
+This interview request was submitted through the portfolio website.
+''';
+
+    // Create the mailto URI with proper formatting
+    final uri = Uri(
+      scheme: 'mailto',
+      path: 'akpk369@gmail.com',
+      query: 'subject=New Interview Request from ${Uri.encodeComponent(_nameController.text)}&body=${Uri.encodeComponent(emailContent)}',
+    );
+
+    // Launch email client
+    await launchUrl(uri);
+    
+    if (mounted) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white, size: 20),
+              SizedBox(width: 8),
+              Text('Email client opened with properly formatted message'),
+            ],
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+  } catch (e) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error launching email client: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isSubmitting = false;
+      });
+    }
+  }
+}
 }

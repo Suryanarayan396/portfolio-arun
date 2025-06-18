@@ -325,7 +325,7 @@ class _PortfolioSectionState extends State<PortfolioSection> with TickerProvider
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 8),
                   child: Text(
-                    'Tools & Platforms',
+                    'My Everyday Stack',
                     style: TextStyle(
                       fontSize: isMobile ? 32 : 42,
                       fontWeight: FontWeight.w300,
@@ -387,59 +387,61 @@ class _PortfolioSectionState extends State<PortfolioSection> with TickerProvider
                       },
                     )
                   : SizedBox(
-                      height: 50, // Fixed height for the row
+                      height: 80, // Fixed height for the row
                       child: Center(
                         child: AnimatedBuilder(
                           animation: _staggeredController,
                           builder: (context, child) {
-                            return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: toolImages.length,
-                              itemBuilder: (context, index) {
-                                // Create wavy effect with sine waves
-                                final verticalOffset = math.sin(
-                                  (_staggeredAnimations[index].value * math.pi * 2) + (index * 0.5)
-                                ) * 10.0; // Vertical wave amplitude
-                                
-                                final scale = 0.9 + math.sin(
-                                  (_staggeredAnimations[index].value * math.pi * 2) + (index * 0.7)
-                                ) * 0.1; // Subtle scale wave
-                                
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                  child: Transform.translate(
-                                    offset: Offset(0, verticalOffset),
-                                    child: Transform.scale(
-                                      scale: scale,
-                                      child: Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(12),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withValues(alpha: 0.08),
-                                              blurRadius: 10,
-                                              offset: Offset(0, 3),
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: List.generate(
+                                toolImages.length,
+                                (index) {
+                                  // Create wavy effect with sine waves
+                                  final verticalOffset = math.sin(
+                                    (_staggeredAnimations[index].value * math.pi * 2) + (index * 0.5)
+                                  ) * 10.0; // Vertical wave amplitude
+                                  
+                                  final scale = 0.9 + math.sin(
+                                    (_staggeredAnimations[index].value * math.pi * 2) + (index * 0.7)
+                                  ) * 0.1; // Subtle scale wave
+                                  
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 12),
+                                    child: Transform.translate(
+                                      offset: Offset(0, verticalOffset),
+                                      child: Transform.scale(
+                                        scale: scale,
+                                        child: Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(12),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withValues(alpha: 0.08),
+                                                blurRadius: 10,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
+                                            border: Border.all(
+                                              color: Color(0xFFE2E8F0),
+                                              width: 1,
                                             ),
-                                          ],
-                                          border: Border.all(
-                                            color: Color(0xFFE2E8F0),
-                                            width: 1,
                                           ),
-                                        ),
-                                        padding: EdgeInsets.all(8),
-                                        child: Image.asset(
-                                          toolImages[index],
-                                          fit: BoxFit.contain,
+                                          padding: EdgeInsets.all(8),
+                                          child: Image.asset(
+                                            toolImages[index],
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             );
                           },
                         ),

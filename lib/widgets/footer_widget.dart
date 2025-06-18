@@ -135,13 +135,46 @@ class FooterWidget extends StatelessWidget {
 
               SizedBox(height: 16),
               Text(
-                'Creative Designer & Developer passionate about creating beautiful digital experiences.',
+                'Creative Designer & Software Tester passionate about creating beautiful digital experiences.',
                 style: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 24),
 
+                          // Footer Text
+              Column(
+                children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                           Text(
+                        'Copyright',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 12,
+                        ),
+                      ), Icon(Icons.copyright_rounded,                      color: Colors.white.withOpacity(0.7),
+),
+                      Text(
+                        'All rights reserved.',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Designed by Destesta | Powered by Destesta',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 12,
+                    ),
+                  ),
             
+                ],
+              ),
+
                 
             ],
           ),

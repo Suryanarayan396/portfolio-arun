@@ -20,16 +20,22 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
   late AnimationController _bounceController1;
   late AnimationController _bounceController2;
   late AnimationController _bounceController3;
+  late AnimationController _abstractController; // Controller for design abstract 2
+  late AnimationController _abstractLeftController; // Controller for design abstract (center-left)
 
   // Bounce animations
   late Animation<double> _bounceAnimation1;
   late Animation<double> _bounceAnimation2;
   late Animation<double> _bounceAnimation3;
+  late Animation<double> _abstractAnimation; // Animation for design abstract 2
+  late Animation<double> _abstractLeftAnimation; // Animation for design abstract (center-left)
 
   // Position animations
   late Animation<Offset> _positionAnimation1;
   late Animation<Offset> _positionAnimation2;
   late Animation<Offset> _positionAnimation3;
+  late Animation<Offset> _abstractPositionAnimation; // Position animation for design abstract 2
+  late Animation<Offset> _abstractLeftPositionAnimation; // Position animation for design abstract (center-left)
 
   final List<SocialLink> socialLinks = [
     SocialLink(icon: FontAwesomeIcons.github, url: 'https://github.com/ARUNAK97'),
@@ -69,6 +75,14 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
       duration: const Duration(milliseconds: 3000),
       vsync: this,
     );
+    _abstractController = AnimationController(
+      duration: const Duration(milliseconds: 4000), // Slower, more elegant movement
+      vsync: this,
+    );
+    _abstractLeftController = AnimationController(
+      duration: const Duration(milliseconds: 3500), // Slightly different timing for variety
+      vsync: this,
+    );
 
     // Create bouncy animations
     _bounceAnimation1 = Tween<double>(
@@ -93,6 +107,22 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     ).animate(CurvedAnimation(
       parent: _bounceController3,
       curve: Curves.elasticOut,
+    ));
+
+    _abstractAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _abstractController,
+      curve: Curves.easeInOutSine, // Smooth, flowing animation
+    ));
+
+    _abstractLeftAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _abstractLeftController,
+      curve: Curves.easeInOutCubic, // Slightly different curve for variety
     ));
 
     // Create floating position animations
@@ -120,6 +150,22 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
       curve: Curves.easeInOut,
     ));
 
+    _abstractPositionAnimation = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, -30), // Larger movement for more dramatic effect
+    ).animate(CurvedAnimation(
+      parent: _abstractController,
+      curve: Curves.easeInOutSine,
+    ));
+
+    _abstractLeftPositionAnimation = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, -25), // Slightly different movement pattern
+    ).animate(CurvedAnimation(
+      parent: _abstractLeftController,
+      curve: Curves.easeInOutCubic,
+    ));
+
     // Start animations with delays
     _entranceController.forward();
 
@@ -134,6 +180,14 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     Future.delayed(const Duration(milliseconds: 1200), () {
       _bounceController3.repeat(reverse: true);
     });
+
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      _abstractController.repeat(reverse: true);
+    });
+
+    Future.delayed(const Duration(milliseconds: 1800), () {
+      _abstractLeftController.repeat(reverse: true);
+    });
   }
 
   @override
@@ -142,6 +196,8 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     _bounceController1.dispose();
     _bounceController2.dispose();
     _bounceController3.dispose();
+    _abstractController.dispose();
+    _abstractLeftController.dispose();
     super.dispose();
   }
 
@@ -189,11 +245,27 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
                 ),
               ),
 
+              Positioned(
+  top: isMobile ? 250 : isTablet ? 200 : 480,
+  left: 0,
+  right: 0,
+  child: Center(
+    child: Opacity(
+      opacity: 0.7, // Adjust opacity to make it subtle
+      child: Image.asset(
+        'assets/images/bg word.png', // Replace with your actual PNG file path
+        width: isMobile ? 400 : isTablet ? 500 : 1400,
+        fit: BoxFit.contain,
+      ),
+    ),
+  ),
+),
+
               // Photo website image as overlay (positioned on top, fully visible)
               Positioned(
                 top: 0,
                 left: 0,
-                right: 0,
+                right: 0, // Removed mobile constraint to show full image
                 bottom: 0,
                 child: Image.asset(
                   'assets/images/photo website.png',
@@ -202,10 +274,11 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
                 ),
               ),
 
+
               // Animated bouncy PNG elements - Now visible on all devices
               // Frame 57 - Top left floating element
               Positioned(
-                top: isMobile ? 30 : isTablet ? 60 : 40,
+                top: isMobile ? 100 : isTablet ? 60 : 40,
                 left: isMobile ? 10 : isTablet ? 40 : 20,
                 child: AnimatedBuilder(
                   animation: _bounceController1,
@@ -234,8 +307,8 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
 
               // Frame 68 - Top right floating element
               Positioned(
-                top: isMobile ? 60 : isTablet ? 100 : 80,
-                right: isMobile ? 15 : isTablet ? 60 : 40,
+                top: isMobile ? 120 : isTablet ? 100 : 80,
+                right: isMobile ? 50 : isTablet ? 60 : 40,
                 child: AnimatedBuilder(
                   animation: _bounceController2,
                   builder: (context, child) {
@@ -263,8 +336,8 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
 
               // Frame 69 - Bottom left floating element
               Positioned(
-                bottom: isMobile ? 40 : isTablet ? 80 : 60,
-                left: isMobile ? 20 : isTablet ? 80 : 60,
+                bottom: isMobile ? 200 : isTablet ? 80 : 120,
+                right: isMobile ? 20 : isTablet ? 80 : 60,
                 child: AnimatedBuilder(
                   animation: _bounceController3,
                   builder: (context, child) {
@@ -280,6 +353,64 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
                               'assets/png/Frame 69.png',
                               width: isMobile ? 90 : isTablet ? 150 : 200,
                               height: isMobile ? 90 : isTablet ? 150 : 200,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // Design Abstract 2 - Center right floating element
+              Positioned(
+                bottom: isMobile ? 120 : isTablet ? 200 : 60  ,
+                left: isMobile ? 10 : isTablet ? 30 : 50,
+                child: AnimatedBuilder(
+                  animation: _abstractController,
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: _abstractPositionAnimation.value,
+                      child: Transform.rotate(
+                        angle: _abstractAnimation.value * 0.08, // Gentle rotation
+                        child: Transform.scale(
+                          scale: 0.8 + (_abstractAnimation.value * 0.2),
+                          child: Opacity(
+                            opacity: (0.6 + (_abstractAnimation.value * 0.4)).clamp(0.0, 1.0),
+                            child: Image.asset(
+                              'assets/png/design abstract 2.png',
+                              width: isMobile ? 50 : isTablet ? 160 : 220,
+                              height: isMobile ? 50 : isTablet ? 160 : 220,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // Design Abstract - Center left floating element
+              Positioned(
+                top: isMobile ? 180 : isTablet ? 220 : 350,
+                left: isMobile ? 60 : isTablet ? 30 : 320,
+                child: AnimatedBuilder(
+                  animation: _abstractLeftController,
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: _abstractLeftPositionAnimation.value,
+                      child: Transform.rotate(
+                        angle: -_abstractLeftAnimation.value * 0.06, // Opposite rotation for variety
+                        child: Transform.scale(
+                          scale: 0.85 + (_abstractLeftAnimation.value * 0.15),
+                          child: Opacity(
+                            opacity: (0.65 + (_abstractLeftAnimation.value * 0.35)).clamp(0.0, 1.0),
+                            child: Image.asset(
+                              'assets/png/design abstract 2.png',
+                              width: isMobile ? 50 : isTablet ? 150 : 200,
+                              height: isMobile ? 50 : isTablet ? 150 : 200,
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -332,7 +463,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
                         child: Opacity(
                           opacity: _entranceAnimation.value * 0.9,
                           child: Text(
-                            'Creative Designer & Developer',
+                            'Product Designer & Software Tester',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: isMobile ? 14 : 16, // Reduced subtitle size
@@ -351,50 +482,54 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
               ),
 
               // Social icons positioned horizontally at bottom right corner
-              Positioned(
-                bottom: 40,
-                right: 40,
-                child: Transform.translate(
-                  offset: Offset(20 * (1 - _entranceAnimation.value), 0),
-                  child: Opacity(
-                    opacity: _entranceAnimation.value,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(25),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.2),
-                          width: 1,
+             // Replace the existing Positioned widget for social icons with this:
+Positioned(
+  bottom: 40,
+  right: isMobile || isTablet ? 60 : 70, // Only set right for desktop
+  left: isMobile || isTablet ? 60 : null, // Stretch to full width for mobile/tablet
+  child: Transform.translate(
+    offset: Offset(20 * (1 - _entranceAnimation.value), 0),
+    child: Opacity(
+      opacity: _entranceAnimation.value,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        child: Center( // Add Center widget here to center the Row
+          child: Row(
+            mainAxisSize: MainAxisSize.min, // Important for centering
+            children: socialLinks.map((link) {
+              return AnimatedBuilder(
+                animation: _entranceAnimation,
+                builder: (context, child) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: isMobile ? 5 : 6),
+                    child: Transform.scale(
+                      scale: 0.5 + (0.5 * _entranceAnimation.value),
+                      child: Opacity(
+                        opacity: _entranceAnimation.value,
+                        child: SocialIcon(
+                          icon: link.icon,
+                          url: link.url,
                         ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: socialLinks.map((link) {
-                          return AnimatedBuilder(
-                            animation: _entranceAnimation,
-                            builder: (context, child) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 6),
-                                child: Transform.scale(
-                                  scale: 0.5 + (0.5 * _entranceAnimation.value),
-                                  child: Opacity(
-                                    opacity: _entranceAnimation.value,
-                                    child: SocialIcon(
-                                      icon: link.icon,
-                                      url: link.url,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ),
                     ),
-                  ),
-                ),
-              ),
+                  );
+                },
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    ),
+  ),
+),
             ],
           ),
         );

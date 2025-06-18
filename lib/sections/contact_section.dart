@@ -164,7 +164,7 @@ class _ContactSectionState extends State<ContactSection> {
             Container(
               margin: EdgeInsets.only(bottom: 8),
               child: Text(
-                'Send Message',
+                'Let’s Discuss My Prototype Idea',
                 style: TextStyle(
                   fontSize: isMobile ? 22 : 26,
                   fontWeight: FontWeight.w600,
@@ -464,15 +464,10 @@ class _ContactSectionState extends State<ContactSection> {
                   icon: Icons.email,
                   label: 'Email Me',
                   onPressed: () {
-                    final emailLaunchUri = Uri(
-                      scheme: 'mailto',
-                      path: 'akpk369@gmail.com',
-                      queryParameters: {
-                        'subject': 'Contact from Portfolio',
-                        'body': 'Hello, I would like to get in touch...'
-                      },
-                    );
-                    launchUrl(emailLaunchUri);
+                final emailSubject = 'Contact from Portfolio';
+    final emailBody = 'Hello, I would like to get in touch...';
+    final emailUrl = 'mailto:akpk369@gmail.com?subject=${Uri.encodeComponent(emailSubject)}&body=${Uri.encodeComponent(emailBody)}';
+    launchUrl(Uri.parse(emailUrl));
                   },
                 ),
               ],
@@ -497,15 +492,10 @@ class _ContactSectionState extends State<ContactSection> {
                     icon: Icons.email,
                     label: 'Email Me',
                     onPressed: () {
-                      final emailLaunchUri = Uri(
-                        scheme: 'mailto',
-                        path: 'akpk369@gmail.com',
-                        queryParameters: {
-                          'subject': 'Contact from Portfolio',
-                          'body': 'Hello, I would like to get in touch...'
-                        },
-                      );
-                      launchUrl(emailLaunchUri);
+                   final emailSubject = 'Contact from Portfolio';
+    final emailBody = 'Hello, I would like to get in touch...';
+    final emailUrl = 'mailto:akpk369@gmail.com?subject=${Uri.encodeComponent(emailSubject)}&body=${Uri.encodeComponent(emailBody)}';
+    launchUrl(Uri.parse(emailUrl));
                     },
                   ),
                 ),
@@ -516,16 +506,16 @@ class _ContactSectionState extends State<ContactSection> {
     );
   }
 
-  void _sendMessage() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isSubmitting = true;
-      });
+void _sendMessage() async {
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isSubmitting = true;
+    });
 
-      try {
-        // Construct email subject and content
-        final emailSubject = 'New Contact Message from ${_nameController.text}';
-        final emailContent = '''
+    try {
+      // Construct email subject and content
+      final emailSubject = 'New Contact Message from ${_nameController.text}';
+      final emailContent = '''
 Contact Details:
 Name: ${_nameController.text}
 Contact Number: ${_contactController.text}
@@ -536,52 +526,54 @@ ${_contextController.text}
 
 ---
 This message was sent from the portfolio contact form.
-        ''';
+      ''';
 
-        final emailLaunchUri = Uri(
-          scheme: 'mailto',
-          path: 'akpk369@gmail.com',
-          queryParameters: {
-            'subject': emailSubject,
-            'body': emailContent,
-          },
+      // Method 1: Using Uri.encodeFull() to properly encode the entire mailto URL
+      final emailUrl = 'mailto:akpk369@gmail.com?subject=${Uri.encodeComponent(emailSubject)}&body=${Uri.encodeComponent(emailContent)}';
+      final emailLaunchUri = Uri.parse(emailUrl);
+
+      // Alternative Method 2: Using Uri constructor with proper encoding
+      // final emailLaunchUri = Uri(
+      //   scheme: 'mailto',
+      //   path: 'akpk369@gmail.com',
+      //   query: 'subject=${Uri.encodeComponent(emailSubject)}&body=${Uri.encodeComponent(emailContent)}',
+      // );
+
+      await launchUrl(emailLaunchUri);
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Email client opened successfully!'),
+            backgroundColor: AppTheme.secondaryColor,
+          ),
         );
 
-        await launchUrl(emailLaunchUri);
-
-        // Show success message
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Email client opened successfully!'),
-              backgroundColor: AppTheme.secondaryColor,
-            ),
-          );
-
-          // Clear form
-          _nameController.clear();
-          _contactController.clear();
-          _companyController.clear();
-          _contextController.clear();
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error opening email client. Please try again.'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      } finally {
-        if (mounted) {
-          setState(() {
-            _isSubmitting = false;
-          });
-        }
+        // Clear form
+        _nameController.clear();
+        _contactController.clear();
+        _companyController.clear();
+        _contextController.clear();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening email client. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
       }
     }
   }
+}
 
   Widget _buildContactButton({
     required IconData icon,
